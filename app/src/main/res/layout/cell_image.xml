@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView
+    <com.kazy.hastepic2.view.SquareImageView
             android:id="@+id/thumbnail_image"
             android:scaleType="centerCrop"
+            android:background="@android:color/black"
+            android:padding="1dp"
             android:layout_width="match_parent"
-            android:layout_height="100dp"/>
+            android:layout_height="match_parent"/>
 </layout>

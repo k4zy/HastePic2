@@ -1,18 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
         xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout
+    <RelativeLayout
             android:orientation="vertical"
+            android:padding="1dp"
+            android:background="@android:color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <ImageView
+        <com.kazy.hastepic2.view.SquareImageView
                 android:id="@+id/thumbnail_image"
                 android:scaleType="centerCrop"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"/>
-        <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-    </LinearLayout>
+                android:layout_height="match_parent"/>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:padding="2dp"
+                      android:background="#66000000"
+                      android:layout_alignParentBottom="true"
+                      android:orientation="vertical">
+            <TextView
+                    android:id="@+id/folder_name"
+                    android:textColor="#ffffffff"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            <TextView
+                    android:id="@+id/photo_count"
+                    android:textColor="#88ffffff"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </RelativeLayout>
 </layout>
