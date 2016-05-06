@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.kazy.hastepic2.R
+import com.kazy.hastepic2.application.imageLoader
 import com.kazy.hastepic2.databinding.CellImageBinding
 import com.kazy.hastepic2.loader.PicassoImageLoader
 import com.kazy.hastepic2.model.HpImage
@@ -38,7 +39,7 @@ class ImageListAdapter(val images: ArrayList<HpImage>, val onClick: OnClickImage
         val image = images[position]
         holder.binding.root.setOnClickListener { onClick.onClickItem(images[position], position) }
         val context = holder.binding.root.context;
-        val imageLoader = PicassoImageLoader(context)
+        val imageLoader = context.imageLoader()
         val oneThirdWidth = (context.resources.displayMetrics.widthPixels) / 3;
         imageLoader.loadAndResize(File(image.thumbnailUri.toString()), holder.binding.thumbnailImage, oneThirdWidth)
     }

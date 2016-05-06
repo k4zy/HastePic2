@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kazy.hastepic2.R
+import com.kazy.hastepic2.application.imageLoader
 import com.kazy.hastepic2.databinding.CellFolderBinding
 import com.kazy.hastepic2.loader.PicassoImageLoader
 import com.kazy.hastepic2.model.HpImageFolder
@@ -41,7 +42,7 @@ class FolderListAdapter(val onClick: OnClickFolder) : RecyclerView.Adapter<Folde
         holder.binding.photoCount.text = folder.imageCount.toString()
         holder.binding.root.setOnClickListener { onClick.onClickItem(images[position], position, it) }
         val context = holder.binding.root.context;
-        val imageLoader = PicassoImageLoader(context)
+        val imageLoader = context.imageLoader()
         val halfWidth = (context.resources.displayMetrics.widthPixels) / 2;
         imageLoader.loadAndResize(File(folder.thumbnailUri.toString()), holder.binding.thumbnailImage, halfWidth)
     }
