@@ -14,16 +14,22 @@ import com.kazy.hastepic2.presenter.FolderPresenter
 
 fun <T : Parcelable> Activity.parcelableExtra(name: String): T = intent.getParcelableExtra<T>(name)
 
+fun Activity.parcelableInt(name: String): Int = intent.getIntExtra(name, 0)
+
 class FolderActivity : AppCompatActivity() {
 
     //    TODO: なぜか参照できない
-//    val images: HpImageFolder by lazy { parcelableExtra<HpImageFolder>(IMAGE_FOLDER) }
+    //    val images: HpImageFolder by lazy { parcelableExtra<HpImageFolder>(IMAGE_FOLDER) }
 
     companion object {
-        val IMAGE_FOLDER = "EXTRA_IMAGE_FOLDER"
-        fun createIntent(context: Context, folder: HpImageFolder): Intent {
+        val EXTRA_IMAGE_FOLDER = "EXTRA_IMAGE_FOLDER"
+        val EXTRA_POSITION_X = "EXTRA_POSITION_X"
+        val EXTRA_POSITION_Y = "EXTRA_POSITION_Y"
+        fun createIntent(context: Context, folder: HpImageFolder, x:Int ,y:Int): Intent {
             return Intent(context, FolderActivity::class.java).apply {
-                putExtra(IMAGE_FOLDER, folder)
+                putExtra(EXTRA_IMAGE_FOLDER, folder)
+                putExtra(EXTRA_POSITION_X, x)
+                putExtra(EXTRA_POSITION_Y, y)
             }
         }
     }
@@ -31,8 +37,11 @@ class FolderActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = DataBindingUtil.setContentView<ActivityFolderBinding>(this as Activity, R.layout.activity_folder)
-        val folder = parcelableExtra<HpImageFolder>(IMAGE_FOLDER)
-        FolderPresenter(binding, folder)
+        val folder = parcelableExtra<HpImageFolder>(EXTRA_IMAGE_FOLDER)
+        val x =parcelableInt(EXTRA_POSITION_X)
+        val y =parcelableInt(EXTRA_POSITION_Y)
+        FolderPresenter(binding, folder, x, y)
+    }
 
     override fun finish() {
         super.finish();
