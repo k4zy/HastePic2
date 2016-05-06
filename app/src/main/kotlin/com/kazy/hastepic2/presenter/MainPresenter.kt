@@ -1,8 +1,10 @@
 package com.kazy.hastepic2.presenter
 
+import android.app.Activity
 import android.content.Context
+import android.support.v4.util.ArrayMap
 import android.support.v7.widget.GridLayoutManager
-import android.util.ArrayMap
+import android.view.View
 import com.kazy.hastepic2.activity.FolderActivity
 import com.kazy.hastepic2.adapter.list.FolderListAdapter
 import com.kazy.hastepic2.databinding.ActivityMainBinding
@@ -19,9 +21,12 @@ class MainPresenter(val binding: ActivityMainBinding, val imageRepository: Image
     val context: Context by lazy { binding.root.context }
 
     init {
-        val adapter = FolderListAdapter(object: FolderListAdapter.OnClickFolder {
-            override fun onClickItem(folder: HpImageFolder, position: Int) {
-                FolderActivity.createIntent(context,folder).let { context.startActivity(it) }
+        val adapter = FolderListAdapter(object : FolderListAdapter.OnClickFolder {
+            override fun onClickItem(folder: HpImageFolder, position: Int, view: View) {
+                FolderActivity.createIntent(context, folder, view.left, view.top).let {
+                    context.startActivity(it)
+                    (context as Activity).overridePendingTransition(0, 0)
+                }
             }
         })
         val manager = GridLayoutManager(context, 2)

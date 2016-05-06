@@ -33,5 +33,9 @@ class FolderActivity : AppCompatActivity() {
         val binding = DataBindingUtil.setContentView<ActivityFolderBinding>(this as Activity, R.layout.activity_folder)
         val folder = parcelableExtra<HpImageFolder>(IMAGE_FOLDER)
         FolderPresenter(binding, folder)
+
+    override fun finish() {
+        super.finish();
+        overridePendingTransition(0, 0);
     }
 }
