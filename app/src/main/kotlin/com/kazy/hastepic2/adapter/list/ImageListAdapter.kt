@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.kazy.hastepic2.R
-import com.kazy.hastepic2.databinding.CellFolderBinding
 import com.kazy.hastepic2.databinding.CellImageBinding
 import com.kazy.hastepic2.loader.PicassoImageLoader
 import com.kazy.hastepic2.model.HpImage
@@ -14,6 +13,8 @@ import java.util.*
 
 
 class ImageListAdapter(val images: ArrayList<HpImage>, val onClick: OnClickImage) : RecyclerView.Adapter<ImageListAdapter.ViewHolder>() {
+
+
     interface OnClickImage {
         fun onClickItem(folder: HpImage, position: Int)
     }
@@ -36,8 +37,10 @@ class ImageListAdapter(val images: ArrayList<HpImage>, val onClick: OnClickImage
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val image = images[position]
         holder.binding.root.setOnClickListener { onClick.onClickItem(images[position], position) }
-        val imageLoader = PicassoImageLoader(holder.binding.root.context)
-        imageLoader.load(File(image.thumbnailUri.toString()), holder.binding.thumbnailImage)
+        val context = holder.binding.root.context;
+        val imageLoader = PicassoImageLoader(context)
+        val oneThirdWidth = (context.resources.displayMetrics.widthPixels) / 3;
+        imageLoader.loadAndResize(File(image.thumbnailUri.toString()), holder.binding.thumbnailImage, oneThirdWidth)
     }
 
     override fun getItemCount(): Int {
