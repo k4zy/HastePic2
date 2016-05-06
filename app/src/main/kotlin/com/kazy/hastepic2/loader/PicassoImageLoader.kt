@@ -10,7 +10,7 @@ class PicassoImageLoader(context: Context) : HpImageLoader {
     private val picasso: Picasso
 
     init {
-        picasso = Picasso.with(context)
+        picasso = Picasso.with(context).apply { setIndicatorsEnabled(true) }
     }
 
     override fun load(file: File, view: ImageView) {
