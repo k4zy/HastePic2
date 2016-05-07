@@ -1,9 +1,11 @@
 package com.kazy.hastepic2.presenter
 
+import android.app.Activity
 import android.content.Context
 import android.support.v4.view.animation.FastOutSlowInInterpolator
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
+import com.kazy.hastepic2.activity.PhotoDetailActivity
 import com.kazy.hastepic2.adapter.list.ImageListAdapter
 import com.kazy.hastepic2.adapter.list.ImageListAdapter.OnClickImage
 import com.kazy.hastepic2.databinding.ActivityFolderBinding
@@ -17,7 +19,14 @@ class FolderPresenter(val binding: ActivityFolderBinding, folder: HpImageFolder,
 
     init {
         val adapter = ImageListAdapter(ArrayList(), object : OnClickImage {
-            override fun onClickItem(folder: HpImage, position: Int) {
+            override fun onClickItem(image: HpImage, position: Int, view: View) {
+                val orientation = context.resources.configuration.orientation
+                val screenLocation = IntArray(2)
+                view.getLocationOnScreen(screenLocation)
+                PhotoDetailActivity.createIntent(context, image, screenLocation[0], screenLocation[1], view.width, view.height, orientation).let {
+                    context.startActivity(it)
+                    (context as Activity).overridePendingTransition(0, 0)
+                }
             }
         })
         folder.images.forEach {
