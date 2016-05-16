@@ -7,6 +7,14 @@ import java.io.File
 
 class PicassoImageLoader(context: Context) : HpImageLoader {
 
+    override fun load(file: File, view: ImageView, f: () -> Unit) {
+        throw UnsupportedOperationException()
+    }
+
+    override fun loadAndResize(file: File, view: ImageView, size: Int, f: () -> Unit) {
+        throw UnsupportedOperationException()
+    }
+
     private val picasso: Picasso
 
     init {

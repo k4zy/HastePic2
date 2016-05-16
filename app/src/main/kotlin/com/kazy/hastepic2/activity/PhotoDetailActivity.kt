@@ -14,6 +14,8 @@ import com.kazy.hastepic2.presenter.PhotoDetailPresenter
 
 class PhotoDetailActivity : AppCompatActivity() {
 
+    lateinit var presenter: PhotoDetailPresenter
+
     companion object {
         val EXTRA_IMAGE = "EXTRA_IMAGE"
         val EXTRA_POSITION_X = "EXTRA_POSITION_X"
@@ -42,10 +44,17 @@ class PhotoDetailActivity : AppCompatActivity() {
         val width = parcelableInt(EXTRA_POSITION_WIDTH)
         val height = parcelableInt(EXTRA_POSITION_HEIGHT)
         val orientation = parcelableInt(EXTRA_ORIENTATION)
-        val presenter = PhotoDetailPresenter(binding, image, x, y, width, height)
+        presenter = PhotoDetailPresenter(binding, image, x, y, width, height, orientation)
 
         if (savedInstanceState == null) {
-            presenter.animate()
+            presenter.animateFadeIn()
         }
+    }
+
+    override fun onBackPressed() {
+        presenter.animateFadeOut(Runnable {
+            finish()
+            overridePendingTransition(0, 0)
+        })
     }
 }

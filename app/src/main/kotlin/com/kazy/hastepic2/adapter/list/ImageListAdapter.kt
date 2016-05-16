@@ -17,7 +17,7 @@ class ImageListAdapter(val images: ArrayList<HpImage>, val onClick: OnClickImage
 
 
     interface OnClickImage {
-        fun onClickItem(folder: HpImage, position: Int, view: View)
+        fun onClickItem(image: HpImage, position: Int, view: View)
     }
 
     fun add(folder: HpImage) {
