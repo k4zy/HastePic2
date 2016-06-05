@@ -3,12 +3,12 @@ package com.kazy.hastepic2.presenter
 import android.app.Activity
 import android.content.Context
 import android.support.v4.view.animation.FastOutSlowInInterpolator
-import android.support.v7.widget.GridLayoutManager
 import android.view.View
 import com.kazy.hastepic2.activity.PhotoDetailActivity
 import com.kazy.hastepic2.adapter.list.ImageListAdapter
 import com.kazy.hastepic2.adapter.list.ImageListAdapter.OnClickImage
 import com.kazy.hastepic2.databinding.ActivityFolderBinding
+import com.kazy.hastepic2.layoutmanager.PreLoadGridLayoutManager
 import com.kazy.hastepic2.model.HpImage
 import com.kazy.hastepic2.model.HpImageFolder
 import java.util.*
@@ -32,7 +32,8 @@ class FolderPresenter(val binding: ActivityFolderBinding, folder: HpImageFolder,
         folder.images.forEach {
             adapter.add(it)
         }
-        val manager = GridLayoutManager(context, 3)
+        val manager = PreLoadGridLayoutManager(context, 3)
+        binding.listView.setItemViewCacheSize(12)
         binding.listView.layoutManager = manager
         binding.listView.adapter = adapter
         binding.listView.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {

@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable
 import android.view.ViewTreeObserver
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
-import android.widget.Toast
 import com.kazy.hastepic2.application.imageLoader
 import com.kazy.hastepic2.databinding.ActivityPhotoDetailBinding
 import com.kazy.hastepic2.model.HpImage
@@ -16,6 +15,7 @@ class PhotoDetailPresenter(val binding: ActivityPhotoDetailBinding, val image: H
     val context by lazy { binding.root.context }
     val imageView by lazy { binding.imageView }
     val shadowLayout by lazy { binding.shadowLayout }
+    val imageLoader by lazy { binding.root.context.imageLoader() }
     var widthScale = 0f
     var heightScale = 0f
     var xDelta = 0f
@@ -27,42 +27,37 @@ class PhotoDetailPresenter(val binding: ActivityPhotoDetailBinding, val image: H
     }
 
     fun animateFadeIn() {
-        context.imageLoader().load(File(image.uri.toString()), imageView, {
-//            Toast.makeText(context, "image Loaded",Toast.LENGTH_SHORT).show()
+        imageLoader.load(File(image.uri.toString()), imageView, {
+            val viewTreeObserver = imageView.viewTreeObserver
+            viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+                override fun onPreDraw(): Boolean {
+                    imageView.viewTreeObserver.removeOnPreDrawListener(this)
+                    val screenLocation = IntArray(2)
+                    imageView.getLocationOnScreen(screenLocation)
+                    xDelta = (x - screenLocation[0]).toFloat()
+                    yDelta = (y - screenLocation[1]).toFloat()
+                    widthScale = width.toFloat() / imageView.width.toFloat()
+                    heightScale = height.toFloat() / imageView.height.toFloat()
 
-//                    imageView.post {
-                        val viewTreeObserver = imageView.viewTreeObserver
-                        viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
-                            override fun onPreDraw(): Boolean {
-                                imageView.viewTreeObserver.removeOnPreDrawListener(this)
-                                val screenLocation = IntArray(2)
-                                imageView.getLocationOnScreen(screenLocation)
-                                xDelta = (x - screenLocation[0]).toFloat()
-                                yDelta = (y - screenLocation[1]).toFloat()
-                                widthScale = width.toFloat() / imageView.width.toFloat()
-                                heightScale = height.toFloat() / imageView.height.toFloat()
-
-                                imageView.pivotX = 0f
-                                imageView.pivotY = 0f
-                                imageView.scaleX = widthScale
-                                imageView.scaleY = heightScale
-                                imageView.translationX = xDelta
-                                imageView.translationY = yDelta
-                                imageView.animate()
-                                        .setDuration(200)
-                                        .scaleX(1f).scaleY(1f)
-                                        .translationX(0f).translationY(0f).
-                                        setInterpolator(DecelerateInterpolator())
-                                        .start()
-                                return true
-                            }
-                        })
-//                    }
+                    imageView.pivotX = 0f
+                    imageView.pivotY = 0f
+                    imageView.scaleX = widthScale
+                    imageView.scaleY = heightScale
+                    imageView.translationX = xDelta
+                    imageView.translationY = yDelta
+                    imageView.animate()
+                            .setDuration(200)
+                            .scaleX(1f).scaleY(1f)
+                            .translationX(0f).translationY(0f).
+                            setInterpolator(DecelerateInterpolator())
+                            .start()
+                    return true
+                }
+            })
         })
     }
 
     fun animateFadeOut(runnable: Runnable) {
-        imageView.scaleType = ImageView.ScaleType.CENTER_CROP
         var fadeOut: Boolean;
         if (context.resources.configuration.orientation != orientation) {
             imageView.pivotX = (imageView.width / 2).toFloat()
