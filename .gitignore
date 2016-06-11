@@ -42,3 +42,8 @@ signing.gradle
 vendor/bundle
 
 .DS_Store
+
+release_hastepic.keystore
+
+supply/publish_credential.json
+hastepic.gradle

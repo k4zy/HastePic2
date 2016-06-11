@@ -1,6 +1,11 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
+def env(String name, String defValue) {
+    def value = System.getenv()[name]
+    return value == null ? defValue : value
+}
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
@@ -24,6 +29,26 @@ android {
     }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    signingConfigs {
+        debug {
+            storeFile = file('./debug_hastepic.keystore')
+            storePassword = 'android'
+            keyAlias = 'hastepic'
+            keyPassword = 'android'
+        }
+        def releaseSettingGradleFile = new File(env("RELEASE_SETTING_GRADLE", "${project.rootDir}/hastepic.gradle"))
+        if (releaseSettingGradleFile.exists()) {
+            apply from: releaseSettingGradleFile, to: android
+        } else {
+            release {
+                storeFile = debug.storeFile
+                storePassword = debug.storePassword
+                keyAlias = debug.keyAlias
+                keyPassword = debug.keyPassword
+            }
+        }
     }
 }
 
