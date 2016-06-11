@@ -17,7 +17,7 @@ android {
     defaultConfig {
         applicationId "com.kazy.hastepic2"
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
